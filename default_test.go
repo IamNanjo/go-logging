@@ -3,8 +3,8 @@ package logging_test
 import (
 	"testing"
 
-	"github.com/IamNanjo/logging"
-	"github.com/IamNanjo/logging/loglevel"
+	"github.com/IamNanjo/go-logging"
+	"github.com/IamNanjo/go-logging/loglevel"
 )
 
 func TestOut(t *testing.T) {

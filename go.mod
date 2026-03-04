@@ -1,4 +1,4 @@
-module github.com/IamNanjo/logging
+module github.com/IamNanjo/go-logging
 
 go 1.25.0
 

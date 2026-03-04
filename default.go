@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/IamNanjo/logging/ansi"
-	"github.com/IamNanjo/logging/icons"
-	"github.com/IamNanjo/logging/internal/formatting"
-	"github.com/IamNanjo/logging/loglevel"
+	"github.com/IamNanjo/go-logging/ansi"
+	"github.com/IamNanjo/go-logging/icons"
+	"github.com/IamNanjo/go-logging/internal/formatting"
+	"github.com/IamNanjo/go-logging/loglevel"
 )
 
 // Default logger
