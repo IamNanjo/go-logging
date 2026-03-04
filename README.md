@@ -2,12 +2,12 @@
 
 - Reads LOGLEVEL environment variable automatically to filter logs
 - LOGLEVEL can be updated at runtime if 
-- Default logger uses unicode icons with ANSI colors
+- Default logger has log level as prefix and the log level uses ANSI colors
 - NewLogger allows creating custom loggers with custom prefixes and suffixes as well as optional timestamp prefixes.
 
 ## Development
 
-**Requires at least Go 1.25.0**
+**Requires at least Go 1.26.0**
 
 1. Install dependencies
     ```sh
