@@ -12,7 +12,7 @@ type LogLevel uint8
 
 //go:generate go tool stringer -type=LogLevel
 const (
-	CRITICAL LogLevel = iota
+	CRITICAL LogLevel = iota + 1
 	ERROR
 	WARN
 	INFO
