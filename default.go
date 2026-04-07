@@ -7,7 +7,7 @@ import (
 // Default logger
 
 var defaultLogger = NewLogger(LoggerConfig{
-	OutPrefix:     ansi.ColoredText{Color: ansi.None, Text: "OUT "},
+	OutPrefix:     ansi.ColoredText{Color: ansi.None, Text: ""},
 	DebugPrefix:   ansi.ColoredText{Color: ansi.Purple, Text: "DEBUG "},
 	OkPrefix:      ansi.ColoredText{Color: ansi.Green, Text: "OK "},
 	PendingPrefix: ansi.ColoredText{Color: ansi.Cyan, Text: "PENDING "},

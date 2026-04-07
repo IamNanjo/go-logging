@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/IamNanjo/go-logging"
+	"github.com/IamNanjo/go-logging/pkg/format"
 	"github.com/IamNanjo/go-logging/pkg/loglevel"
 )
 
@@ -46,7 +47,9 @@ func TestInfo(t *testing.T) {
 }
 
 func TestErr(t *testing.T) {
-	_, err := logging.Err("Default error logging with LOGLEVEL set to %s\n", loglevel.Level)
+	err := format.Err("LOGLEVEL set to %s", loglevel.Level)
+	err = format.Err("This message uses format.Err() %w", err)
+	_, err = logging.Err("Default error logging %v\n", err)
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}

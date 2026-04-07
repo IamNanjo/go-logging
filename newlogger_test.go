@@ -6,6 +6,7 @@ import (
 
 	"github.com/IamNanjo/go-logging"
 	"github.com/IamNanjo/go-logging/pkg/ansi"
+	"github.com/IamNanjo/go-logging/pkg/format"
 	"github.com/IamNanjo/go-logging/pkg/loglevel"
 	"github.com/IamNanjo/go-logging/pkg/timeprefix"
 )
@@ -33,7 +34,7 @@ func TestNew(t *testing.T) {
 		FatalSuffix:   ansi.ColoredText{Color: ansi.Red, Text: " Fatal suffix"},
 	})
 
-	bytesWritten, err := l.Out("Custom output logging with LOGLEVEL set to %s\n", loglevel.Level)
+	bytesWritten, err := l.Out("Custom output logging with LOGLEVEL set to %s\n", l.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -42,7 +43,7 @@ func TestNew(t *testing.T) {
 		t.Fatalf("No bytes were written with Logger.Out")
 	}
 
-	bytesWritten, err = l.Debug("Custom debug logging with LOGLEVEL set to %s\n", loglevel.Level)
+	bytesWritten, err = l.Debug("Custom debug logging with LOGLEVEL set to %s\n", l.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -50,7 +51,7 @@ func TestNew(t *testing.T) {
 		t.Fatalf("No bytes were written with Logger.Debug")
 	}
 
-	bytesWritten, err = l.Ok("Custom ok logging\nwith LOGLEVEL set to %s\n", loglevel.Level)
+	bytesWritten, err = l.Ok("Custom ok logging\nwith LOGLEVEL set to %s\n", l.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -58,7 +59,7 @@ func TestNew(t *testing.T) {
 		t.Fatalf("No bytes were written with Logger.Info")
 	}
 
-	bytesWritten, err = l.Info("Custom info logging with LOGLEVEL set to %s\n", loglevel.Level)
+	bytesWritten, err = l.Info("Custom info logging with LOGLEVEL set to %s\n", l.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -66,7 +67,7 @@ func TestNew(t *testing.T) {
 		t.Fatalf("No bytes were written with Logger.Info")
 	}
 
-	bytesWritten, err = l.Pending("Custom pending logging with LOGLEVEL set to %s\n", loglevel.Level)
+	bytesWritten, err = l.Pending("Custom pending logging with LOGLEVEL set to %s\n", l.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -74,7 +75,7 @@ func TestNew(t *testing.T) {
 		t.Fatalf("No bytes were written with Logger.Pending")
 	}
 
-	bytesWritten, err = l.Warn("Custom warning logging with LOGLEVEL set to %s\n", loglevel.Level)
+	bytesWritten, err = l.Warn("Custom warning logging with LOGLEVEL set to %s\n", l.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -82,7 +83,14 @@ func TestNew(t *testing.T) {
 		t.Fatalf("No bytes were written with Logger.Warn")
 	}
 
-	bytesWritten, err = l.Err("Custom error logging with LOGLEVEL set to %s\n", loglevel.Level)
+	err = format.Err("LOGLEVEL set to %s", l.LogLevel())
+	err = format.Err("This message uses format.Err() %w", err)
+	bytesWritten, err = l.Err("Default error logging %v\n", err)
+	if err != nil {
+		t.Fatalf("Logging failed: %v", err)
+	}
+
+	bytesWritten, err = l.Err("Custom error logging with LOGLEVEL set to %s\n", l.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -90,7 +98,7 @@ func TestNew(t *testing.T) {
 		t.Fatalf("No bytes were written with Logger.Err")
 	}
 
-	logging.Info("Default info logging with LOGLEVEL set to %s\n", loglevel.Level)
+	logging.Info("Default info logging with LOGLEVEL set to %s\n", l.LogLevel())
 
 	defer func() {
 		err := recover()

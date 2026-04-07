@@ -31,17 +31,20 @@ type Logger struct {
 	fatalSuffix   ansi.ColoredText
 }
 
+func (l *Logger) LogLevel() loglevel.LogLevel {
+	return l.logLevel
+}
+
 // Writes to stdout regardless of LOGLEVEL. Indents all lines to same level as other default log functions
 func (l *Logger) Out(format string, args ...any) (int, error) {
-	return fmt.Fprintf(
+	return fmt.Fprint(
 		os.Stdout,
 		formatting.IndentWithPrefixAndSuffix(
 			l.time,
 			l.outPrefix,
-			format,
-			l.outSuffix,
+			fmt.Sprintf(format, args...),
+			l.errSuffix,
 		),
-		args...,
 	)
 }
 
@@ -50,15 +53,14 @@ func (l *Logger) Debug(format string, args ...any) (int, error) {
 	if l.logLevel < loglevel.DEBUG {
 		return 0, nil
 	}
-	return fmt.Fprintf(
-		os.Stdout,
+	return fmt.Fprint(
+		os.Stderr,
 		formatting.IndentWithPrefixAndSuffix(
 			l.time,
 			l.debugPrefix,
-			format,
-			l.debugSuffix,
+			fmt.Sprintf(format, args...),
+			l.errSuffix,
 		),
-		args...,
 	)
 }
 
@@ -67,15 +69,14 @@ func (l *Logger) Ok(format string, args ...any) (int, error) {
 	if l.logLevel < loglevel.INFO {
 		return 0, nil
 	}
-	return fmt.Fprintf(
+	return fmt.Fprint(
 		os.Stdout,
 		formatting.IndentWithPrefixAndSuffix(
 			l.time,
 			l.okPrefix,
-			format,
-			l.okSuffix,
+			fmt.Sprintf(format, args...),
+			l.errSuffix,
 		),
-		args...,
 	)
 }
 
@@ -84,15 +85,14 @@ func (l *Logger) Pending(format string, args ...any) (int, error) {
 	if l.logLevel < loglevel.INFO {
 		return 0, nil
 	}
-	return fmt.Fprintf(
+	return fmt.Fprint(
 		os.Stdout,
 		formatting.IndentWithPrefixAndSuffix(
 			l.time,
 			l.pendingPrefix,
-			format,
-			l.pendingSuffix,
+			fmt.Sprintf(format, args...),
+			l.errSuffix,
 		),
-		args...,
 	)
 }
 
@@ -101,15 +101,14 @@ func (l *Logger) Info(format string, args ...any) (int, error) {
 	if l.logLevel < loglevel.INFO {
 		return 0, nil
 	}
-	return fmt.Fprintf(
+	return fmt.Fprint(
 		os.Stdout,
 		formatting.IndentWithPrefixAndSuffix(
 			l.time,
 			l.infoPrefix,
-			format,
-			l.infoSuffix,
+			fmt.Sprintf(format, args...),
+			l.errSuffix,
 		),
-		args...,
 	)
 }
 
@@ -118,15 +117,14 @@ func (l *Logger) Warn(format string, args ...any) (int, error) {
 	if l.logLevel < loglevel.WARN {
 		return 0, nil
 	}
-	return fmt.Fprintf(
+	return fmt.Fprint(
 		os.Stderr,
 		formatting.IndentWithPrefixAndSuffix(
 			l.time,
 			l.warnPrefix,
-			format,
-			l.warnSuffix,
+			fmt.Sprintf(format, args...),
+			l.errSuffix,
 		),
-		args...,
 	)
 }
 
@@ -135,27 +133,25 @@ func (l *Logger) Err(format string, args ...any) (int, error) {
 	if l.logLevel < loglevel.ERROR {
 		return 0, nil
 	}
-	return fmt.Fprintf(
+	return fmt.Fprint(
 		os.Stderr,
 		formatting.IndentWithPrefixAndSuffix(
 			l.time,
 			l.errPrefix,
-			format,
+			fmt.Sprintf(format, args...),
 			l.errSuffix,
 		),
-		args...,
 	)
 }
 
 // Panic with message. Uses same prefix as Err.
 func (l *Logger) Fatal(format string, args ...any) {
-	panic(fmt.Sprintf(
+	panic(
 		formatting.IndentWithPrefixAndSuffix(
 			l.time,
-			l.fatalPrefix,
-			format,
-			l.fatalSuffix,
+			l.errPrefix,
+			fmt.Sprintf(format, args...),
+			l.errSuffix,
 		),
-		args...,
-	))
+	)
 }

@@ -35,7 +35,7 @@ func NewLogger(config LoggerConfig) *Logger {
 
 	indentSize := 0
 	prefixSize := 0
-	indentSize = len(config.Time.Get()) + 1
+	indentSize = len(config.Time.Get())
 	prefixSize = max(prefixSize, len(config.OutPrefix.Text))
 	prefixSize = max(prefixSize, len(config.DebugPrefix.Text))
 	prefixSize = max(prefixSize, len(config.OkPrefix.Text))
