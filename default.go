@@ -17,26 +17,26 @@ var defaultLogger = NewLogger(LoggerConfig{
 })
 
 func Out(format string, args ...any) (int, error) {
-	return defaultLogger.Out(format, args)
+	return defaultLogger.Out(format, args...)
 }
 func Debug(format string, args ...any) (int, error) {
-	return defaultLogger.Debug(format, args)
+	return defaultLogger.Debug(format, args...)
 }
 func Ok(format string, args ...any) (int, error) {
-	return defaultLogger.Ok(format, args)
+	return defaultLogger.Ok(format, args...)
 }
 func Pending(format string, args ...any) (int, error) {
-	return defaultLogger.Pending(format, args)
+	return defaultLogger.Pending(format, args...)
 }
 func Info(format string, args ...any) (int, error) {
-	return defaultLogger.Info(format, args)
+	return defaultLogger.Info(format, args...)
 }
 func Warn(format string, args ...any) (int, error) {
-	return defaultLogger.Warn(format, args)
+	return defaultLogger.Warn(format, args...)
 }
 func Err(format string, args ...any) (int, error) {
-	return defaultLogger.Err(format, args)
+	return defaultLogger.Err(format, args...)
 }
 func Fatal(format string, args ...any) {
-	defaultLogger.Fatal(format, args)
+	defaultLogger.Fatal(format, args...)
 }
