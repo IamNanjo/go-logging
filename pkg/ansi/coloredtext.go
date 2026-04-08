@@ -2,8 +2,6 @@ package ansi
 
 import (
 	"os"
-
-	"golang.org/x/term"
 )
 
 type ColoredText struct {
@@ -11,7 +9,7 @@ type ColoredText struct {
 	Text  string
 }
 
-var useColor = term.IsTerminal(int(os.Stdout.Fd())) && os.Getenv("NO_COLOR") == "" && os.Getenv("TERM") != "dumb"
+var useColor = os.Getenv("NO_COLOR") == "" && os.Getenv("TERM") != "dumb"
 
 // Output string with ANSI escape codes unless output is not a terminal,
 // user has NO_COLOR environment variable set or
