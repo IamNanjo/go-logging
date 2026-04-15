@@ -43,7 +43,7 @@ func (l *Logger) Out(format string, args ...any) (int, error) {
 			l.time,
 			l.outPrefix,
 			fmt.Sprintf(format, args...),
-			l.errSuffix,
+			l.outSuffix,
 		),
 	)
 }
@@ -59,7 +59,7 @@ func (l *Logger) Debug(format string, args ...any) (int, error) {
 			l.time,
 			l.debugPrefix,
 			fmt.Sprintf(format, args...),
-			l.errSuffix,
+			l.debugSuffix,
 		),
 	)
 }
@@ -75,7 +75,7 @@ func (l *Logger) Ok(format string, args ...any) (int, error) {
 			l.time,
 			l.okPrefix,
 			fmt.Sprintf(format, args...),
-			l.errSuffix,
+			l.okSuffix,
 		),
 	)
 }
@@ -91,7 +91,7 @@ func (l *Logger) Pending(format string, args ...any) (int, error) {
 			l.time,
 			l.pendingPrefix,
 			fmt.Sprintf(format, args...),
-			l.errSuffix,
+			l.pendingSuffix,
 		),
 	)
 }
@@ -107,12 +107,12 @@ func (l *Logger) Info(format string, args ...any) (int, error) {
 			l.time,
 			l.infoPrefix,
 			fmt.Sprintf(format, args...),
-			l.errSuffix,
+			l.infoSuffix,
 		),
 	)
 }
 
-// Writes to stderr with yellow warning prefix if LOGLEVEL is at least WARN. Indents all lines to same level.
+// Writes to stderr if LOGLEVEL is at least WARN. Indents all lines to same level.
 func (l *Logger) Warn(format string, args ...any) (int, error) {
 	if l.logLevel < loglevel.WARN {
 		return 0, nil
@@ -123,12 +123,12 @@ func (l *Logger) Warn(format string, args ...any) (int, error) {
 			l.time,
 			l.warnPrefix,
 			fmt.Sprintf(format, args...),
-			l.errSuffix,
+			l.warnSuffix,
 		),
 	)
 }
 
-// Writes to stderr with red cross prefix if LOGLEVEL is at least ERROR. Indents all lines to same level.
+// Writes to stderr if LOGLEVEL is at least ERROR. Indents all lines to same level.
 func (l *Logger) Err(format string, args ...any) (int, error) {
 	if l.logLevel < loglevel.ERROR {
 		return 0, nil
