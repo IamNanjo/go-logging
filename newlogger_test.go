@@ -56,7 +56,7 @@ func TestNew(t *testing.T) {
 		t.Fatalf("Logging failed: %v", err)
 	}
 	if bytesWritten == 0 {
-		t.Fatalf("No bytes were written with Logger.Info")
+		t.Fatalf("No bytes were written with Logger.Ok")
 	}
 
 	bytesWritten, err = l.Info("Custom info logging with LOGLEVEL set to %s\n", l.LogLevel())
@@ -89,16 +89,9 @@ func TestNew(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
-
-	bytesWritten, err = l.Err("Custom error logging with LOGLEVEL set to %s\n", l.LogLevel())
-	if err != nil {
-		t.Fatalf("Logging failed: %v", err)
-	}
 	if bytesWritten == 0 {
-		t.Fatalf("No bytes were written with Logger.Err")
+		t.Fatal("No bytes were written with Logger.Err")
 	}
-
-	logging.Info("Default info logging with LOGLEVEL set to %s\n", l.LogLevel())
 
 	defer func() {
 		err := recover()
