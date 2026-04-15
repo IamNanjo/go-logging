@@ -144,8 +144,11 @@ func (l *Logger) Err(format string, args ...any) (int, error) {
 	)
 }
 
-// Panic with message. Uses same prefix as Err.
+// Same as Err but with panic.
 func (l *Logger) Fatal(format string, args ...any) {
+	if l.logLevel < loglevel.CRITICAL {
+		panic("")
+	}
 	panic(
 		formatting.IndentWithPrefixAndSuffix(
 			l.time,
