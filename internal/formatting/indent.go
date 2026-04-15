@@ -14,22 +14,22 @@ func IndentWithPrefixAndSuffix(t *timeprefix.TimePrefix, p ansi.ColoredText, inp
 	var (
 		result strings.Builder
 		indent = "\n" + strings.Repeat(" ", IndentSize)
-		last   = len(input) - 1
 	)
 
-	var prefix string
-	var visiblePrefixLength int
-	var estimatedLength = last
+	var (
+		prefix              string
+		visiblePrefixLength int
+		last                = len(input) - 1
+	)
 
-	if estimatedLength > 0 {
-		result.Grow(estimatedLength)
+	if last > 0 {
+		result.Grow(last)
 	}
 
 	timePrefix := t.Get()
 	result.WriteString(timePrefix)
 	visiblePrefixLength = len(timePrefix) + len(p.Text)
 	prefix += p.String()
-	estimatedLength += len(prefix)
 
 	result.WriteString(LeftPad(prefix, visiblePrefixLength, IndentSize))
 
