@@ -51,12 +51,12 @@ func Err(input string, args ...any) error {
 	var errResult multiError
 
 	var (
-		textResult                 strings.Builder
-		argIndex                   = 0
-		lastWasColon               = false
-		lineLength                 = 0
-		in                         = []rune(input)
-		inLen                      = len(in)
+		textResult   strings.Builder
+		argIndex     = 0
+		lastWasColon = false
+		lineLength   = 0
+		in           = []rune(input)
+		inLen        = len(in)
 	)
 
 	textResult.Grow(prefixLength + inLen)
@@ -75,11 +75,15 @@ func Err(input string, args ...any) error {
 			// Wrap when word ends with ": ". Common in errors and this can improve readability.
 			if lastWasColon && isSpace {
 				wrap()
-				lastWasColon = false
 			} else if isSpace && lineLength > wrapCutoff { // Line is long enough to wrap
 				wrap()
 			} else {
-				textResult.WriteRune(r)
+				switch r {
+				case '\t':
+					textResult.Write([]byte("  "))
+				default:
+					textResult.WriteRune(r)
+				}
 				lineLength++
 			}
 
