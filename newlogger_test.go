@@ -94,8 +94,7 @@ func TestNew(t *testing.T) {
 	}
 
 	defer func() {
-		err := recover()
-		if err == nil {
+		if recover() == nil {
 			t.Fatalf("Expected Logger.Fatal to panic but it did not")
 		}
 	}()
