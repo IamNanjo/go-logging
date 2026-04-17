@@ -35,7 +35,7 @@ func TestDebug(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
-	if bytesWritten != 0 {
+	if bytesWritten == 0 {
 		t.Fatalf("No bytes were written")
 	}
 }
