@@ -52,9 +52,9 @@ func Err(input string, args ...any) error {
 
 	var (
 		textResult   strings.Builder
+		lineLength   int
 		argIndex     = 0
 		lastWasColon = false
-		lineLength   = 0
 		in           = []rune(input)
 		inLen        = len(in)
 	)

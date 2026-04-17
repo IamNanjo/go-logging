@@ -13,7 +13,7 @@ import (
 
 func TestNew(t *testing.T) {
 	l := logging.NewLogger(logging.LoggerConfig{
-		LogLevel: loglevel.DEBUG,
+		LogLevel: new(loglevel.DEBUG),
 		Time:     &timeprefix.TimePrefix{UTC: false, Format: time.RFC3339},
 
 		OutPrefix:     ansi.ColoredText{Color: ansi.None, Text: "Out prefix "},

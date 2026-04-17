@@ -11,7 +11,7 @@ import (
 )
 
 type Logger struct {
-	logLevel      loglevel.LogLevel
+	logLevel      *loglevel.LogLevel
 	time          *timeprefix.TimePrefix
 	outPrefix     ansi.ColoredText
 	outSuffix     ansi.ColoredText
@@ -32,7 +32,7 @@ type Logger struct {
 }
 
 func (l *Logger) LogLevel() loglevel.LogLevel {
-	return l.logLevel
+	return *l.logLevel
 }
 
 // Writes to stdout regardless of LOGLEVEL. Indents all lines to same level as other default log functions
@@ -50,7 +50,7 @@ func (l *Logger) Out(format string, args ...any) (int, error) {
 
 // Writes to stdout if LOGLEVEL is at least DEBUG. Indents all lines to same level as other log functions.
 func (l *Logger) Debug(format string, args ...any) (int, error) {
-	if l.logLevel < loglevel.DEBUG {
+	if *l.logLevel < loglevel.DEBUG {
 		return 0, nil
 	}
 	return fmt.Fprint(
@@ -66,7 +66,7 @@ func (l *Logger) Debug(format string, args ...any) (int, error) {
 
 // Writes to stdout if LOGLEVEL is at least INFO. Indents all lines to same level.
 func (l *Logger) Ok(format string, args ...any) (int, error) {
-	if l.logLevel < loglevel.INFO {
+	if *l.logLevel < loglevel.INFO {
 		return 0, nil
 	}
 	return fmt.Fprint(
@@ -82,7 +82,7 @@ func (l *Logger) Ok(format string, args ...any) (int, error) {
 
 // Writes to stdout if LOGLEVEL is at least INFO. Indents all lines to same level.
 func (l *Logger) Pending(format string, args ...any) (int, error) {
-	if l.logLevel < loglevel.INFO {
+	if *l.logLevel < loglevel.INFO {
 		return 0, nil
 	}
 	return fmt.Fprint(
@@ -98,7 +98,7 @@ func (l *Logger) Pending(format string, args ...any) (int, error) {
 
 // Writes to stdout if LOGLEVEL is at least INFO. Indents all lines to same level.
 func (l *Logger) Info(format string, args ...any) (int, error) {
-	if l.logLevel < loglevel.INFO {
+	if *l.logLevel < loglevel.INFO {
 		return 0, nil
 	}
 	return fmt.Fprint(
@@ -114,7 +114,7 @@ func (l *Logger) Info(format string, args ...any) (int, error) {
 
 // Writes to stderr if LOGLEVEL is at least WARN. Indents all lines to same level.
 func (l *Logger) Warn(format string, args ...any) (int, error) {
-	if l.logLevel < loglevel.WARN {
+	if *l.logLevel < loglevel.WARN {
 		return 0, nil
 	}
 	return fmt.Fprint(
@@ -130,7 +130,7 @@ func (l *Logger) Warn(format string, args ...any) (int, error) {
 
 // Writes to stderr if LOGLEVEL is at least ERROR. Indents all lines to same level.
 func (l *Logger) Err(format string, args ...any) (int, error) {
-	if l.logLevel < loglevel.ERROR {
+	if *l.logLevel < loglevel.ERROR {
 		return 0, nil
 	}
 	return fmt.Fprint(
@@ -146,7 +146,7 @@ func (l *Logger) Err(format string, args ...any) (int, error) {
 
 // Same as Err but with panic.
 func (l *Logger) Fatal(format string, args ...any) {
-	if l.logLevel < loglevel.CRITICAL {
+	if *l.logLevel < loglevel.CRITICAL {
 		panic("")
 	}
 	panic(

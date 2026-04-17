@@ -29,8 +29,8 @@ func NewLogger(config LoggerConfig) *Logger {
 		fatalSuffix:   config.FatalSuffix,
 	}
 
-	if config.LogLevel == 0 {
-		l.logLevel = loglevel.Level
+	if config.LogLevel == nil {
+		l.logLevel = &loglevel.Level
 	}
 
 	indentSize := 0
@@ -52,7 +52,7 @@ func NewLogger(config LoggerConfig) *Logger {
 
 // Prefixes should only contain visible characters as this is used to determine indent size
 type LoggerConfig struct {
-	LogLevel      loglevel.LogLevel      // Set log level for this logger. Will default to global log level.
+	LogLevel      *loglevel.LogLevel     // Set log level for this logger. Will default to global log level.
 	Time          *timeprefix.TimePrefix // Start logs with current time (UTC or local) with specified format.
 	OutPrefix     ansi.ColoredText
 	OutSuffix     ansi.ColoredText
