@@ -21,5 +21,5 @@
 
 1. Run tests
     ```sh
-    go test ./...
+    go test ./... -v -failfast -race
     ```
