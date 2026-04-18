@@ -1,6 +1,10 @@
 package timeprefix
 
-import "time"
+import (
+	"time"
+
+	"github.com/IamNanjo/go-logging/internal/common"
+)
 
 type TimePrefix struct {
 	UTC    bool
@@ -17,5 +21,5 @@ func (tp *TimePrefix) Get() string {
 		now = now.UTC()
 	}
 
-	return now.Format(tp.Format) + " "
+	return now.Format(tp.Format) + common.ColumnSeparatorString
 }

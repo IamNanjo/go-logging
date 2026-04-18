@@ -3,46 +3,61 @@ package formatting
 import (
 	"strings"
 
+	"github.com/IamNanjo/go-logging/internal/common"
 	"github.com/IamNanjo/go-logging/pkg/ansi"
 	"github.com/IamNanjo/go-logging/pkg/timeprefix"
 )
 
 // Message begins after IndentSize characters. Automatically increased to the longest prefix out of all loggers.
-var IndentSize = 7
+var (
+	IndentSize int
+	TimeLen    int
+)
 
-func IndentWithPrefixAndSuffix(t *timeprefix.TimePrefix, p ansi.ColoredText, input string, s ansi.ColoredText) string {
+func IndentWithPrefixAndSuffix(
+	t *timeprefix.TimePrefix,
+	prefix ansi.ColoredText,
+	input string,
+	suffix ansi.ColoredText,
+) string {
 	var (
 		result strings.Builder
-		indent = "\n" + strings.Repeat(" ", IndentSize)
+		indent = append(GetPadding(0, IndentSize), common.ColumnSeparator...)
 	)
 
-	var (
-		prefix              string
-		visiblePrefixLength int
-		last                = len(input) - 1
-	)
-
+	var last = len(input) - 1
 	if last > 0 {
 		result.Grow(last)
 	}
 
 	timePrefix := t.Get()
 	result.WriteString(timePrefix)
-	visiblePrefixLength = len(timePrefix) + len(p.Text)
-	prefix += p.String()
 
-	result.WriteString(LeftPad(prefix, visiblePrefixLength, IndentSize))
+	padding := GetPadding(len(timePrefix)+len(prefix.Text), IndentSize)
+	if TimeLen > common.ColumnSeparatorLen && timePrefix == "" {
+		copy(padding[TimeLen-common.ColumnSeparatorLen:TimeLen], common.ColumnSeparator)
+	}
+	result.Write(padding)
+	result.WriteString(prefix.String())
+	result.Write(common.ColumnSeparator)
+
+	if TimeLen > common.ColumnSeparatorLen {
+		copy(indent[TimeLen-common.ColumnSeparatorLen:TimeLen], common.ColumnSeparator)
+	}
 
 	for i, r := range input {
-		if r == '\n' {
-			if i < last {
-				result.WriteString(indent)
-				continue
-			} else if i == last {
-				result.WriteString(s.String())
-			}
+		if r != '\n' {
+			result.WriteRune(r)
+			continue
 		}
-		result.WriteRune(r)
+
+		if i < last {
+			result.WriteRune(r)
+			result.Write(indent)
+		} else if i == last {
+			result.WriteString(suffix.String())
+			result.WriteRune(r)
+		}
 	}
 
 	return result.String()

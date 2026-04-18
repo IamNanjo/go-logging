@@ -32,6 +32,9 @@ type Logger struct {
 }
 
 func (l *Logger) LogLevel() loglevel.LogLevel {
+	if l == nil || l.logLevel == nil {
+		return loglevel.Level
+	}
 	return *l.logLevel
 }
 

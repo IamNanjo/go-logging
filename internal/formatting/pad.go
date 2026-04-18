@@ -1,15 +1,16 @@
 package formatting
 
-import (
-	"strings"
-)
-
 // Add spaces until input is at least as long as size
-func LeftPad(input string, visibleLength int, size int) string {
-	padding := size - visibleLength
+func GetPadding(length int, targetLength int) []byte {
+	padding := targetLength - length
 	if padding <= 0 {
-		return input
+		return []byte{}
 	}
 
-	return strings.Repeat(" ", padding) + input
+	result := make([]byte, padding)
+	for i := range padding {
+		result[i] = ' '
+	}
+
+	return result
 }

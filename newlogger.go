@@ -29,6 +29,10 @@ func NewLogger(config LoggerConfig) *Logger {
 		fatalSuffix:   config.FatalSuffix,
 	}
 
+	if config.Time != nil {
+		formatting.TimeLen = max(formatting.TimeLen, len(config.Time.Get()))
+	}
+
 	if config.LogLevel == nil {
 		l.logLevel = &loglevel.Level
 	}
@@ -36,6 +40,7 @@ func NewLogger(config LoggerConfig) *Logger {
 	indentSize := 0
 	prefixSize := 0
 	indentSize = len(config.Time.Get())
+
 	prefixSize = max(prefixSize, len(config.OutPrefix.Text))
 	prefixSize = max(prefixSize, len(config.DebugPrefix.Text))
 	prefixSize = max(prefixSize, len(config.OkPrefix.Text))
@@ -44,6 +49,7 @@ func NewLogger(config LoggerConfig) *Logger {
 	prefixSize = max(prefixSize, len(config.WarnPrefix.Text))
 	prefixSize = max(prefixSize, len(config.ErrPrefix.Text))
 	prefixSize = max(prefixSize, len(config.FatalPrefix.Text))
+
 	indentSize += prefixSize
 	formatting.IndentSize = max(formatting.IndentSize, indentSize)
 
