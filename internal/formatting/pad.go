@@ -11,6 +11,5 @@ func GetPadding(length int, targetLength int) []byte {
 	for i := range padding {
 		result[i] = ' '
 	}
-
 	return result
 }

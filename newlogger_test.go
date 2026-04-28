@@ -2,7 +2,6 @@ package logging_test
 
 import (
 	"testing"
-	"time"
 
 	"github.com/IamNanjo/go-logging"
 	"github.com/IamNanjo/go-logging/pkg/ansi"
@@ -13,28 +12,28 @@ import (
 
 var cl *logging.Logger = logging.NewLogger(logging.LoggerConfig{
 	LogLevel: new(loglevel.DEBUG),
-	Time:     &timeprefix.TimePrefix{UTC: false, Format: time.RFC3339},
+	Time:     &timeprefix.TimePrefix{UTC: true, Format: "2006-01-02 15:04"},
 
 	OutPrefix:     ansi.ColoredText{Color: ansi.None, Text: "Out prefix"},
-	OutSuffix:     ansi.ColoredText{Color: ansi.None, Text: " Out suffix"},
+	OutSuffix:     ansi.ColoredText{Color: ansi.None, Text: " [Out suffix]"},
 	DebugPrefix:   ansi.ColoredText{Color: ansi.Purple, Text: "Debug prefix"},
-	DebugSuffix:   ansi.ColoredText{Color: ansi.Purple, Text: " Debug suffix"},
+	DebugSuffix:   ansi.ColoredText{Color: ansi.Purple, Text: " [Debug suffix]"},
 	OkPrefix:      ansi.ColoredText{Color: ansi.Green, Text: "Ok prefix"},
-	OkSuffix:      ansi.ColoredText{Color: ansi.Green, Text: " Ok suffix"},
+	OkSuffix:      ansi.ColoredText{Color: ansi.Green, Text: " [Ok suffix]"},
 	PendingPrefix: ansi.ColoredText{Color: ansi.Cyan, Text: "Pending prefix"},
-	PendingSuffix: ansi.ColoredText{Color: ansi.Cyan, Text: " Pending suffix"},
+	PendingSuffix: ansi.ColoredText{Color: ansi.Cyan, Text: " [Pending suffix]"},
 	InfoPrefix:    ansi.ColoredText{Color: ansi.Blue, Text: "Info prefix"},
-	InfoSuffix:    ansi.ColoredText{Color: ansi.Blue, Text: " Info suffix"},
+	InfoSuffix:    ansi.ColoredText{Color: ansi.Blue, Text: " [Info suffix]"},
 	WarnPrefix:    ansi.ColoredText{Color: ansi.Yellow, Text: "Warn prefix"},
-	WarnSuffix:    ansi.ColoredText{Color: ansi.Yellow, Text: " Warn suffix"},
+	WarnSuffix:    ansi.ColoredText{Color: ansi.Yellow, Text: " [Warn suffix]"},
 	ErrPrefix:     ansi.ColoredText{Color: ansi.Red, Text: "Err prefix"},
-	ErrSuffix:     ansi.ColoredText{Color: ansi.Red, Text: " Err suffix"},
+	ErrSuffix:     ansi.ColoredText{Color: ansi.Red, Text: " [Err suffix]"},
 	FatalPrefix:   ansi.ColoredText{Color: ansi.Red, Text: "Fatal prefix"},
-	FatalSuffix:   ansi.ColoredText{Color: ansi.Red, Text: " Fatal suffix"},
+	FatalSuffix:   ansi.ColoredText{Color: ansi.Red, Text: " [Fatal suffix]"},
 })
 
 func TestNewOut(t *testing.T) {
-	bytesWritten, err := cl.Out("Custom output logging with LOGLEVEL set to %s\n", l.LogLevel())
+	bytesWritten, err := cl.Out("Custom output logging with LOGLEVEL set to %s\n", cl.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -44,7 +43,7 @@ func TestNewOut(t *testing.T) {
 }
 
 func TestNewDebug(t *testing.T) {
-	bytesWritten, err := cl.Debug("Custom debug logging with LOGLEVEL set to %s\n", l.LogLevel())
+	bytesWritten, err := cl.Debug("Custom debug logging with LOGLEVEL set to %s\n", cl.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -53,7 +52,7 @@ func TestNewDebug(t *testing.T) {
 	}
 }
 func TestNewOk(t *testing.T) {
-	bytesWritten, err := cl.Ok("Custom ok logging\nwith LOGLEVEL set to %s\n", l.LogLevel())
+	bytesWritten, err := cl.Ok("Custom ok logging\nwith LOGLEVEL set to %s\n", cl.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -62,7 +61,7 @@ func TestNewOk(t *testing.T) {
 	}
 }
 func TestNewInfo(t *testing.T) {
-	bytesWritten, err := cl.Info("Custom info logging with LOGLEVEL set to %s\n", l.LogLevel())
+	bytesWritten, err := cl.Info("Custom info logging with LOGLEVEL set to %s\n", cl.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -71,7 +70,7 @@ func TestNewInfo(t *testing.T) {
 	}
 }
 func TestNewPending(t *testing.T) {
-	bytesWritten, err := cl.Pending("Custom pending logging with LOGLEVEL set to %s\n", l.LogLevel())
+	bytesWritten, err := cl.Pending("Custom pending logging with LOGLEVEL set to %s\n", cl.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}
@@ -80,7 +79,7 @@ func TestNewPending(t *testing.T) {
 	}
 }
 func TestNewWarn(t *testing.T) {
-	bytesWritten, err := cl.Warn("Custom warning logging with LOGLEVEL set to %s\n", l.LogLevel())
+	bytesWritten, err := cl.Warn("Custom warning logging with LOGLEVEL set to %s\n", cl.LogLevel())
 	if err != nil {
 		t.Fatalf("Logging failed: %v", err)
 	}

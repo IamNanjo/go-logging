@@ -38,6 +38,47 @@ func (l *Logger) LogLevel() loglevel.LogLevel {
 	return *l.logLevel
 }
 
+// Return config the config for this logger.
+// Pointer values are copied so they cannot be used to edit existing loggers.
+func (l *Logger) Config() *LoggerConfig {
+	if l == nil {
+		return nil
+	}
+
+	var ll = l.logLevel
+	if ll != &loglevel.Level {
+		lll := *ll
+		ll = &lll
+	}
+
+	var t *timeprefix.TimePrefix
+	if l.time != nil {
+		lt := *l.time
+		t = &lt
+	}
+
+	return &LoggerConfig{
+		LogLevel:      ll,
+		Time:          t,
+		OutPrefix:     l.outPrefix,
+		OutSuffix:     l.outSuffix,
+		DebugPrefix:   l.debugPrefix,
+		DebugSuffix:   l.debugSuffix,
+		OkPrefix:      l.okPrefix,
+		OkSuffix:      l.okSuffix,
+		PendingPrefix: l.pendingPrefix,
+		PendingSuffix: l.pendingSuffix,
+		InfoPrefix:    l.infoPrefix,
+		InfoSuffix:    l.infoSuffix,
+		WarnPrefix:    l.warnPrefix,
+		WarnSuffix:    l.warnSuffix,
+		ErrPrefix:     l.errPrefix,
+		ErrSuffix:     l.errSuffix,
+		FatalPrefix:   l.fatalPrefix,
+		FatalSuffix:   l.fatalSuffix,
+	}
+}
+
 // Writes to stdout regardless of LOGLEVEL. Indents all lines to same level as other default log functions
 func (l *Logger) Out(format string, args ...any) (int, error) {
 	return fmt.Fprint(

@@ -3,16 +3,20 @@ package formatting
 import (
 	"strings"
 
-	"github.com/IamNanjo/go-logging/internal/common"
 	"github.com/IamNanjo/go-logging/pkg/ansi"
 	"github.com/IamNanjo/go-logging/pkg/timeprefix"
 )
 
-// Message begins after IndentSize characters. Automatically increased to the longest prefix out of all loggers.
 var (
+	// Message begins after IndentSize characters. Automatically increased when creating new loggers.
 	IndentSize int
-	TimeLen    int
+	// Length of time longest time prefix. Automatically increased when creating new loggers.
+	TimeLen         int
+	columnSeparator = " │ "
 )
+
+// Column separator length in visible characters
+const ColumnSeparatorLen = 3
 
 func IndentWithPrefixAndSuffix(
 	t *timeprefix.TimePrefix,
@@ -22,27 +26,37 @@ func IndentWithPrefixAndSuffix(
 ) string {
 	var (
 		result strings.Builder
-		indent = append(GetPadding(0, IndentSize), common.ColumnSeparator...)
+		last   = len(input) - 1
 	)
-
-	var last = len(input) - 1
 	if last > 0 {
 		result.Grow(last)
 	}
 
-	timePrefix := t.Get()
-	result.WriteString(timePrefix)
+	// Time prefix
 
-	padding := GetPadding(len(timePrefix)+len(prefix.Text), IndentSize)
-	if TimeLen > common.ColumnSeparatorLen && timePrefix == "" {
-		copy(padding[TimeLen-common.ColumnSeparatorLen:TimeLen], common.ColumnSeparator)
+	timePrefix := t.Get()
+	timePadding := GetPadding(len(timePrefix), TimeLen)
+
+	result.WriteString(timePrefix)
+	result.Write(timePadding)
+
+	if TimeLen != 0 {
+		result.WriteString(columnSeparator)
 	}
+
+	// Prefix
+
+	padding := GetPadding(TimeLen+len(prefix.Text), IndentSize)
+
 	result.Write(padding)
 	result.WriteString(prefix.String())
-	result.Write(common.ColumnSeparator)
+	result.WriteString(columnSeparator)
 
-	if TimeLen > common.ColumnSeparatorLen {
-		copy(indent[TimeLen-common.ColumnSeparatorLen:TimeLen], common.ColumnSeparator)
+	// Multiline handling
+
+	var indent = append(GetPadding(0, IndentSize), columnSeparator...)
+	if TimeLen != 0 {
+		copy(indent[TimeLen-ColumnSeparatorLen:TimeLen], []byte(columnSeparator))
 	}
 
 	for i, r := range input {

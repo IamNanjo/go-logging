@@ -1,7 +1,10 @@
 package logging
 
 import (
+	"time"
+
 	"github.com/IamNanjo/go-logging/pkg/ansi"
+	"github.com/IamNanjo/go-logging/pkg/timeprefix"
 )
 
 // Default logger
@@ -17,3 +20,20 @@ var Default = NewLogger(LoggerConfig{
 	WarnPrefix:    ansi.ColoredText{Color: ansi.Yellow, Text: "WARNING"},
 	ErrPrefix:     ansi.ColoredText{Color: ansi.Red, Text: "ERROR"},
 })
+
+var defaultT *Logger
+
+// Returns default logger with RFC3339 timestamps.
+func DefaultT() *Logger {
+	if defaultT != nil {
+		return defaultT
+	}
+
+	c := Default.Config()
+	c.Time = &timeprefix.TimePrefix{
+		Format: time.RFC3339,
+	}
+
+	defaultT = NewLogger(*c)
+	return defaultT
+}
